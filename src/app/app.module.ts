@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { LogginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { Graph1Component } from './pages/graph1/graph.component';
 import { NopagefoundComponent } from './pages/nopagefound/nopagefound.component';
 import { ProgressComponent } from './pages/progress/progress.component';
 import { BreadcrumbsComponent } from './shared/breadcrumbs/breadcrumbs.component';
@@ -22,13 +23,13 @@ import { SidebarComponent } from './shared/sidebar/sidebar.component';
     BreadcrumbsComponent,
     HeaderComponent,
     SidebarComponent,
-    ProgressComponent
+    ProgressComponent,
+    Graph1Component
   ],
-  imports: [
+  imports: [//Aqui van los modulos
     BrowserModule,
     AppRoutingModule
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
