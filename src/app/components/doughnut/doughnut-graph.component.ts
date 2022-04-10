@@ -3,11 +3,11 @@ import { ChartData, ChartType } from 'chart.js';
 
 
 @Component({
-    selector: 'app-graph-component',
-    templateUrl: './graph.component.html'
+    selector: 'app-doughnut-graph',
+    templateUrl: './doughnut-graph.component.html'
 })
 
-export class GraphComponent {
+export class DoughnutGraphComponent {
     public doughnutChartLabels: string[] = ['Download Sales', 'In-Store Sales', 'Mail-Order Sales'];
     public doughnutChartData: ChartData<'doughnut'> = {
         labels: this.doughnutChartLabels,
