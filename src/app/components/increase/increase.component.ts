@@ -19,4 +19,9 @@ export class IncreaseComponent implements OnInit {
         console.log(this.progressValue)
         this.outputProgressValue.emit(this.progressValue);
     }
+
+    onChange( value:number ){
+        value = value <= 0 ? 0 : value >= 100 ? 100 : value;
+        this.outputProgressValue.emit(value)
+    }
 }
