@@ -4,9 +4,10 @@ import { CommonModule } from "@angular/common";
 //Modulos
 import { SharedModule } from "../shared/shared.module";
 import { RouterModule } from "@angular/router";
+import { NgChartsModule } from 'ng2-charts';
 
 //Componentes
-import { Graph1Component } from "./graph1/graph.component";
+import { Graph1Component } from "./graph1/graph1.component";
 import { ProgressComponent } from "./progress/progress.component";
 import { PagesComponent } from "./pages.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
@@ -33,7 +34,8 @@ import { ComponentsModule } from "../components/components.module";
         RouterModule,
         SharedModule,
         FormsModule,
-        ComponentsModule
+        ComponentsModule,
+        NgChartsModule
     ]
 })
 export class PagesModule {}
