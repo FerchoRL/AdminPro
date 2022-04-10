@@ -10,6 +10,8 @@ import { Graph1Component } from "./graph1/graph.component";
 import { ProgressComponent } from "./progress/progress.component";
 import { PagesComponent } from "./pages.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
+import { FormsModule } from "@angular/forms";
+import { ComponentsModule } from "../components/components.module";
 
 
 
@@ -29,7 +31,9 @@ import { DashboardComponent } from "./dashboard/dashboard.component";
     imports: [
         CommonModule,
         RouterModule,
-        SharedModule
+        SharedModule,
+        FormsModule,
+        ComponentsModule
     ]
 })
 export class PagesModule {}
