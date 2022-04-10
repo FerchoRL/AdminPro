@@ -1,12 +1,17 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { ThisReceiver } from "@angular/compiler";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 
 @Component({
     selector: 'app-increase',
     templateUrl: './increase.component.html'
 })
 
-export class IncreaseComponent {
+export class IncreaseComponent implements OnInit {
+    ngOnInit(){
+        this.btnClass = `btn ${ this.btnClass }`
+    }
     @Input() progressValue: number = 50;
+    @Input() btnClass: string = "btn-primary";
     @Output() outputProgressValue: EventEmitter<number> = new EventEmitter();
 
     updateValue( value: number){
