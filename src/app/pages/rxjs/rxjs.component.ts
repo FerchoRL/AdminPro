@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { Observable, retry } from "rxjs";
+import { Observable, retry, interval, take, map } from "rxjs";
 
 @Component({
     selector: 'app-rxjs',
@@ -12,13 +12,30 @@ export class RxjsComponent {
 
         //Hay que suscribirse para que se ejecute el codigo de la susbcripcion
         //El pipe transforma y puede rehacer la informacion
-        this.returnObservable().pipe(
-            retry()//Retry intenta nuevamente el observable
-        ).subscribe({//Dentro del subscribe hay 3 opciones
-            next: value => console.log('Subs: ', value),//Opcion next que es cuando se ejecuta
-            error: err => console.warn('Error: ', err),//Opcion error 
-            complete: () => console.info('Obs terminado')//Opcion complete
-        });
+        // this.returnObservable().pipe(
+        //     retry()//Retry intenta nuevamente el observable
+        // ).subscribe({//Dentro del subscribe hay 3 opciones
+        //     next: value => console.log('Subs: ', value),//Opcion next que es cuando se ejecuta
+        //     error: err => console.warn('Error: ', err),//Opcion error 
+        //     complete: () => console.info('Obs terminado')//Opcion complete
+        // });
+
+        // this.returnInterval().subscribe(
+        //     (value) => console.log(value)
+        // )
+        // Same function
+        this.returnRxjsInterval().subscribe(console.log)
+    }
+
+    returnRxjsInterval(): Observable<number> {
+        return interval(1000)
+            .pipe(
+                take(4),
+                //Could be map(value => value + 1)
+                map(value/*value from interval*/ => {//Obtain the value and work as I needed
+                    return value + 1;
+                })
+            );
     }
 
     returnObservable(): Observable<number> {//Le indico el tipo de observable
