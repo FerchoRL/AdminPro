@@ -14,6 +14,7 @@ import { FormsModule } from "@angular/forms";
 import { ComponentsModule } from "../components/components.module";
 import { AccountSettingsComponent } from "./accountsettings/account-setting.component";
 import { PromisesComponent } from "./promises/promises.component";
+import { RxjsComponent } from "./rxjs/rxjs.component";
 
 
 
@@ -24,7 +25,8 @@ import { PromisesComponent } from "./promises/promises.component";
         ProgressComponent,
         PagesComponent,
         AccountSettingsComponent,
-        PromisesComponent
+        PromisesComponent,
+        RxjsComponent
     ],
     exports: [
         DashboardComponent,
@@ -32,7 +34,8 @@ import { PromisesComponent } from "./promises/promises.component";
         ProgressComponent,
         PagesComponent,
         AccountSettingsComponent,
-        PromisesComponent
+        PromisesComponent,
+        RxjsComponent
     ],
     imports: [
         CommonModule,
