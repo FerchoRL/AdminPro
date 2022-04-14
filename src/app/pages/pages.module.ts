@@ -13,6 +13,7 @@ import { DashboardComponent } from "./dashboard/dashboard.component";
 import { FormsModule } from "@angular/forms";
 import { ComponentsModule } from "../components/components.module";
 import { AccountSettingsComponent } from "./accountsettings/account-setting.component";
+import { PromisesComponent } from "./promises/promises.component";
 
 
 
@@ -22,14 +23,16 @@ import { AccountSettingsComponent } from "./accountsettings/account-setting.comp
         Graph1Component,
         ProgressComponent,
         PagesComponent,
-        AccountSettingsComponent
+        AccountSettingsComponent,
+        PromisesComponent
     ],
     exports: [
         DashboardComponent,
         Graph1Component,
         ProgressComponent,
         PagesComponent,
-        AccountSettingsComponent
+        AccountSettingsComponent,
+        PromisesComponent
     ],
     imports: [
         CommonModule,
