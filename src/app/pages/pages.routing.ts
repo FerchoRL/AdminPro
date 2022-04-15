@@ -15,12 +15,12 @@ const routes: Routes = [
         path: 'dashboard',
         component: PagesComponent,
         children: [
-          { path: '', component: DashboardComponent },
-          { path: 'progress', component: ProgressComponent },
-          { path: 'graph1', component: Graph1Component },
-          { path: 'account-settings', component: AccountSettingsComponent},
-          { path: 'promises', component: PromisesComponent},
-          { path: 'rxjs', component: RxjsComponent}
+          { path: '', component: DashboardComponent, data: { titlePage: 'Dashboard' } },
+          { path: 'progress', component: ProgressComponent, data: { titlePage: 'Progress' } },
+          { path: 'graph1', component: Graph1Component, data: { titlePage: 'Graph1' } },
+          { path: 'account-settings', component: AccountSettingsComponent, data: { titlePage: 'Account-Settings' }},
+          { path: 'promises', component: PromisesComponent, data: { titlePage: 'Promises' }},
+          { path: 'rxjs', component: RxjsComponent, data: { titlePage: 'Rxjs' }}
 
         ]
       }
