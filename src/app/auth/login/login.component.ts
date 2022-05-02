@@ -19,8 +19,8 @@ export class LogginComponent {
 
 
     //TODO: FormBuilder group is deprecated
-    public loginForm = this.fb.group({
-        email: ['joseputop@gmail.com', [Validators.required, Validators.email]],
+    public loginForm = this.fb.group({//If local storage has email return email if not empty string
+        email: [ localStorage.getItem('email') || '', [Validators.required, Validators.email]],
         password: ['', [Validators.required]],
         remember: [false]
     });
@@ -30,7 +30,13 @@ export class LogginComponent {
         // this.router.navigateByUrl('/');
         this.userService.login(this.loginForm.value)
             .subscribe(resp => {
-                console.log(resp)
+                console.log(resp);
+                //Save email in local storage when remember me check button is true
+                if (this.loginForm.get('remember')?.value) {
+                    localStorage.setItem('email', this.loginForm.get('email')?.value);
+                }else{
+                    localStorage.removeItem('email');
+                }
             }, (err) => {
                 //Estas con las rutas en donde podria encontrar mis errores provenientes del backend
                 //TODO: implement validations when didn't send email or password
