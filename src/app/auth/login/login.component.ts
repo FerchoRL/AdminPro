@@ -13,6 +13,8 @@ declare const gapi: any;
 })
 export class LogginComponent implements OnInit{
 
+    public auth2: any;
+
     constructor(private router: Router,
         private fb: FormBuilder,
         private userService: UserService) { }
@@ -52,15 +54,10 @@ export class LogginComponent implements OnInit{
             });
     }
 
-    onSuccess(googleUser: any) {
-        console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
-        const id_token = googleUser.getAuthResponse().id_token;//Get token
-    }
-
-    onFailure(error: any) {
-        console.log(error);
-        
-    }
+    
+    /**
+     * IMPLEMENT FUNCTIONS TO GET TOKEN FROM GOOGLE SIGN IN
+     */
 
     renderButton() {
         gapi.signin2.render('my-signin2', {
@@ -68,10 +65,35 @@ export class LogginComponent implements OnInit{
             'width': 240,
             'height': 50,
             'longtitle': true,
-            'theme': 'dark',
-            'onsuccess': this.onSuccess,
-            'onfailure': this.onFailure
+            'theme': 'dark'
         });
+        this.startApp();
     }
+
+    startApp () {
+        gapi.load('auth2', () =>{
+          // Retrieve the singleton for the GoogleAuth library and set up the client.
+          this.auth2 = gapi.auth2.init({
+            client_id: '233723854836-f5mr8u91gia89t1t49uskai2kuf6b0eb.apps.googleusercontent.com',
+            cookiepolicy: 'single_host_origin',
+          });
+          this.attachSignin(document.getElementById('my-signin2'));
+        });
+      };
+
+      attachSignin(element: any) {
+        this.auth2.attachClickHandler(element, {},
+            (googleUser: any) => {
+              const id_token = googleUser.getAuthResponse().id_token;//Get token
+              this.userService.loginGoogle( id_token).subscribe();
+
+              //TODO: REDIRECT
+            }, (error: any) => {
+              alert(JSON.stringify(error, undefined, 2));
+            });
+      }
+      /**
+     * IMPLEMENT FUNCTIONS TO GET TOKEN FROM GOOGLE SIGN IN
+     */
 
 }

@@ -36,4 +36,16 @@ export class UserService {
                 })
             );
     }
+
+    //LoginGoogle
+    loginGoogle(token: string) {
+        //Call create user api from my backend
+        //Return an observable so I have to subscribe
+        return this.http.post(`${base_url}/login/google`, {token})
+            .pipe(
+                tap((resp: any) => {
+                    localStorage.setItem('token', resp.token);
+                })
+            );
+    }
 }
