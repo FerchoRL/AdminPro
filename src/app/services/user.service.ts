@@ -1,18 +1,29 @@
 import { HttpClient } from "@angular/common/http";
+import { Injectable, NgZone } from "@angular/core";
+import { Router } from "@angular/router";
 import { catchError, map, tap } from "rxjs/operators";
-import { Injectable } from "@angular/core";
+import { Observable, of } from "rxjs";
+
 import { environment } from "src/environments/environment";
 import { LoginForm } from "../interfaces/login-form.interfaces";
 import { RegisterForm } from "../interfaces/register-form.interfaces";
-import { Observable, of } from "rxjs";
 
 const base_url = environment.base_url;
+declare const gapi: any;
 
 @Injectable({
     providedIn: 'root'
 })
 export class UserService {
-    constructor(private http: HttpClient) { }
+
+    public auth2: any;
+
+    constructor(private http: HttpClient,
+        private router: Router,
+        private ngZone: NgZone) {
+        //Cada vez que se entra por primera vez a la aplicacion
+        this.googleInit();
+    }
 
     //Hago mi interfaz RegisterForm para poder acceder a sus propiedades y el tipado
     //Register
@@ -51,7 +62,7 @@ export class UserService {
     }
 
     //Renew token
-    validateToken() {
+    validateToken(): Observable<boolean> {
         const token = localStorage.getItem('token') || '';
         return this.http.get(`${base_url}/login/loginRenew`, {
             headers: {
@@ -66,6 +77,29 @@ export class UserService {
             map(resp => true),
             catchError(error => of(false))//Cacho el error y uso el off que crea un nuevo observable
         );
+    }
+
+    //Logout (didn't use api)
+    logout() {
+        localStorage.removeItem('token');//Remove token
+        //Logout from google
+        //El signout es libreria externa de angular y me regresa un warning de ngZone el cual lo resuelvo asi:
+        this.auth2.signOut().then(() => {
+            this.ngZone.run(() => {
+                //Redirect to login
+                this.router.navigateByUrl('/login');
+            })
+        });
+    }
+
+    googleInit() {
+        gapi.load('auth2', () => {
+            // Retrieve the singleton for the GoogleAuth library and set up the client.
+            this.auth2 = gapi.auth2.init({
+                client_id: '233723854836-f5mr8u91gia89t1t49uskai2kuf6b0eb.apps.googleusercontent.com',
+                cookiepolicy: 'single_host_origin',
+            });
+        });
     }
 
 

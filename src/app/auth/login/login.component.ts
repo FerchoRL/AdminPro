@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, NgZone, OnInit } from "@angular/core";
 import { FormBuilder, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import Swal from "sweetalert2";
@@ -17,7 +17,8 @@ export class LogginComponent implements OnInit {
 
     constructor(private router: Router,
         private fb: FormBuilder,
-        private userService: UserService) { }
+        private userService: UserService,
+        private ngZone: NgZone) { }
 
     ngOnInit(): void {
         this.renderButton();//Google sign in button
@@ -88,10 +89,13 @@ export class LogginComponent implements OnInit {
         this.auth2.attachClickHandler(element, {},
             (googleUser: any) => {
                 const id_token = googleUser.getAuthResponse().id_token;//Get token
+                //LoginGoogle libreria fuera de angular que causa issue de ngZone
                 this.userService.loginGoogle(id_token).subscribe(
                     resp => {
-                        //REDIRECT dashboard
-                        this.router.navigateByUrl('/');
+                        this.ngZone.run(() => {
+                            //REDIRECT dashboard
+                            this.router.navigateByUrl('/');
+                        })
                     }
                 );
             }, (error: any) => {
