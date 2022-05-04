@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import Swal from 'sweetalert2';
 import { UserService } from "src/app/services/user.service";
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'app-register',
@@ -24,7 +25,8 @@ export class RegisterComponent {
     });
 
     constructor(private fb: FormBuilder,
-        private userService: UserService) { }
+        private userService: UserService,
+        private router: Router) { }
 
     createUser() {
         this.formSubmitted = true;
@@ -36,8 +38,8 @@ export class RegisterComponent {
         //TODO: subscribe is deprecated I have to check
         this.userService.createUser(this.registerForm.value)
             .subscribe(resp => {
-                console.log('Usuario creado');
-                console.log(resp);
+                //Navigate dashboard when register ok
+                this.router.navigateByUrl('/');
             }, (error) => {
                 //Swety alert to show the error
                 Swal.fire('Error', error.error.msg,'error');

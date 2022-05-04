@@ -11,7 +11,7 @@ declare const gapi: any;
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.css']
 })
-export class LogginComponent implements OnInit{
+export class LogginComponent implements OnInit {
 
     public auth2: any;
 
@@ -35,16 +35,19 @@ export class LogginComponent implements OnInit{
 
     login() {
         //TODO: subscribe is deprecated I have to check
-        // this.router.navigateByUrl('/');
+
         this.userService.login(this.loginForm.value)
             .subscribe(resp => {
-                console.log(resp);
+                //console.log(resp);
                 //Save email in local storage when remember me check button is true
                 if (this.loginForm.get('remember')?.value) {
                     localStorage.setItem('email', this.loginForm.get('email')?.value);
                 } else {
                     localStorage.removeItem('email');
                 }
+
+                //Navigate dashboard
+                this.router.navigateByUrl('/');
             }, (err) => {
                 //Estas con las rutas en donde podria encontrar mis errores provenientes del backend
                 //TODO: implement validations when didn't send email or password
@@ -54,7 +57,7 @@ export class LogginComponent implements OnInit{
             });
     }
 
-    
+
     /**
      * IMPLEMENT FUNCTIONS TO GET TOKEN FROM GOOGLE SIGN IN
      */
@@ -70,30 +73,33 @@ export class LogginComponent implements OnInit{
         this.startApp();
     }
 
-    startApp () {
-        gapi.load('auth2', () =>{
-          // Retrieve the singleton for the GoogleAuth library and set up the client.
-          this.auth2 = gapi.auth2.init({
-            client_id: '233723854836-f5mr8u91gia89t1t49uskai2kuf6b0eb.apps.googleusercontent.com',
-            cookiepolicy: 'single_host_origin',
-          });
-          this.attachSignin(document.getElementById('my-signin2'));
+    startApp() {
+        gapi.load('auth2', () => {
+            // Retrieve the singleton for the GoogleAuth library and set up the client.
+            this.auth2 = gapi.auth2.init({
+                client_id: '233723854836-f5mr8u91gia89t1t49uskai2kuf6b0eb.apps.googleusercontent.com',
+                cookiepolicy: 'single_host_origin',
+            });
+            this.attachSignin(document.getElementById('my-signin2'));
         });
-      };
+    };
 
-      attachSignin(element: any) {
+    attachSignin(element: any) {
         this.auth2.attachClickHandler(element, {},
             (googleUser: any) => {
-              const id_token = googleUser.getAuthResponse().id_token;//Get token
-              this.userService.loginGoogle( id_token).subscribe();
-
-              //TODO: REDIRECT
+                const id_token = googleUser.getAuthResponse().id_token;//Get token
+                this.userService.loginGoogle(id_token).subscribe(
+                    resp => {
+                        //REDIRECT dashboard
+                        this.router.navigateByUrl('/');
+                    }
+                );
             }, (error: any) => {
-              alert(JSON.stringify(error, undefined, 2));
+                alert(JSON.stringify(error, undefined, 2));
             });
-      }
-      /**
-     * IMPLEMENT FUNCTIONS TO GET TOKEN FROM GOOGLE SIGN IN
-     */
+    }
+    /**
+   * IMPLEMENT FUNCTIONS TO GET TOKEN FROM GOOGLE SIGN IN
+   */
 
 }
