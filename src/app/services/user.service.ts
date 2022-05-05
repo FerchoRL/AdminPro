@@ -7,6 +7,7 @@ import { Observable, of } from "rxjs";
 import { environment } from "src/environments/environment";
 import { LoginForm } from "../interfaces/login-form.interfaces";
 import { RegisterForm } from "../interfaces/register-form.interfaces";
+import { User } from "../models/user.model";
 
 const base_url = environment.base_url;
 declare const gapi: any;
@@ -17,6 +18,7 @@ declare const gapi: any;
 export class UserService {
 
     public auth2: any;
+    public user!: User;
 
     constructor(private http: HttpClient,
         private router: Router,
@@ -70,12 +72,17 @@ export class UserService {
             }
         }).pipe(//renuevo el token
             tap((resp: any) => {
-                //console.log(resp);
+                const { userName, email, role, google, img } = resp.userDB
+                //Create a instance of my user model
+                this.user = new User(userName, email, '', img, google, role);
                 localStorage.setItem('token', resp.newToken);//Debe ser igual a la respuesta que trae mi api
             }),
             //Mapeo la respuesta, si existe token es true, si no es false
             map(resp => true),
-            catchError(error => of(false))//Cacho el error y uso el off que crea un nuevo observable
+            catchError(error => {
+                //console.log(error)
+                return of(false)
+            })//Cacho el error y uso el off que crea un nuevo observable
         );
     }
 
@@ -94,7 +101,6 @@ export class UserService {
 
     googleInit() {
         return new Promise((resolve) => {
-            console.log('google init');
             gapi.load('auth2', () => {
                 // Retrieve the singleton for the GoogleAuth library and set up the client.
                 this.auth2 = gapi.auth2.init({
@@ -103,9 +109,6 @@ export class UserService {
                 });
                 resolve(this.auth2);
             });
-        })
-
+        });
     }
-
-
 }
