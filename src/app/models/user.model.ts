@@ -20,7 +20,7 @@ export class User{
         if (this.img){
             return `${base_url}/upload/users/${this.img}`;
         }else{
-        return `${base_url}/upload/users/not-img`;
+        return `${base_url}/upload/users/not-img.jpg`;
         }
     }
 }

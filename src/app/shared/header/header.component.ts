@@ -10,6 +10,7 @@ export class HeaderComponent{
     public user!: User;
     constructor(private userService: UserService){
         this.user = userService.user;
+        console.log(this.user.imageURL);
     }
     logout(){
         this.userService.logout();

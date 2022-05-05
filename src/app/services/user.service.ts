@@ -71,14 +71,13 @@ export class UserService {
                 'x-token': token
             }
         }).pipe(//renuevo el token
-            tap((resp: any) => {
-                const { userName, email, role, google, img } = resp.userDB
+            map((resp: any) => {
+                const { userName, email, role, google, img = '' } = resp.userDB
                 //Create a instance of my user model
                 this.user = new User(userName, email, '', img, google, role);
                 localStorage.setItem('token', resp.newToken);//Debe ser igual a la respuesta que trae mi api
+                return true;
             }),
-            //Mapeo la respuesta, si existe token es true, si no es false
-            map(resp => true),
             catchError(error => {
                 //console.log(error)
                 return of(false)
