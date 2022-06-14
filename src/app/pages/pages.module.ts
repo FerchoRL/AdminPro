@@ -10,7 +10,7 @@ import { Graph1Component } from "./graph1/graph1.component";
 import { ProgressComponent } from "./progress/progress.component";
 import { PagesComponent } from "./pages.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ComponentsModule } from "../components/components.module";
 import { AccountSettingsComponent } from "./accountsettings/account-setting.component";
 import { PromisesComponent } from "./promises/promises.component";
@@ -43,6 +43,7 @@ import { ProfileComponent } from "./profile/profile.component";
     imports: [
         CommonModule,
         RouterModule,
+        ReactiveFormsModule,
         SharedModule,
         FormsModule,
         ComponentsModule

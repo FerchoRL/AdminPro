@@ -1,4 +1,6 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UserService } from "src/app/services/user.service";
 
 @Component({
     selector: 'app=profile',
@@ -8,4 +10,22 @@ import { Component } from "@angular/core";
       ]
 })
 
-export class ProfileComponent{}
+export class ProfileComponent implements OnInit{
+    public profileForm!: FormGroup;
+
+    constructor( private fb: FormBuilder,
+        private userService: UserService) {}
+
+    ngOnInit(): void {
+        this.profileForm = this.fb.group({
+            userName: ['123', Validators.required],
+            email: ['abc', [Validators.required, Validators.email]]
+        });
+    }
+
+    updateProfile(){
+        this.userService.updateProfileUser(this.profileForm.value).subscribe( resp => {
+            console.log(resp)
+        })
+    }
+}
