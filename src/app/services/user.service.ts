@@ -27,6 +27,14 @@ export class UserService {
         this.googleInit();
     }
 
+    get token(): string {
+        return localStorage.getItem('token') || '';
+    }
+
+    get uid(): string {
+        return this.user.uid || '';
+    }
+
     //Hago mi interfaz RegisterForm para poder acceder a sus propiedades y el tipado
     //Register
     createUser(formData: RegisterForm) {
@@ -65,16 +73,15 @@ export class UserService {
 
     //Renew token
     validateToken(): Observable<boolean> {
-        const token = localStorage.getItem('token') || '';
         return this.http.get(`${base_url}/login/loginRenew`, {
             headers: {
-                'x-token': token
+                'x-token': this.token
             }
         }).pipe(//renuevo el token
             map((resp: any) => {
-                const { userName, email, role, google, img = '' } = resp.userDB
+                const { userName, email, role, google, img = '', uid } = resp.userDB
                 //Create a instance of my user model
-                this.user = new User(userName, email, '', img, google, role);
+                this.user = new User(userName, email, '', img, google, role, uid);
                 localStorage.setItem('token', resp.newToken);//Debe ser igual a la respuesta que trae mi api
                 return true;
             }),
@@ -108,6 +115,18 @@ export class UserService {
                 });
                 resolve(this.auth2);
             });
+        });
+    }
+
+    updateProfileUser(data: { email: string, userName: string, role: string}) {
+        data = {
+            ...data,
+            role: this.user.role || ""
+        };
+        return this.http.put(`${base_url}/users/${this.uid}`, data, {
+            headers: {
+                'x-token': this.token
+            }
         });
     }
 }
