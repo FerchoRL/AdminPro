@@ -35,7 +35,8 @@
                 <h4 class="card-title">Avatar</h4>
                 <h6 class="card-subtitlte">Imagen del usuario</h6>
 
-                <img src="" alt="">
+                <img *ngIf="!imgTemp" [src]="userDB.imageURL" alt="">
+                <img *ngIf="imgTemp" [src]="imgTemp" alt="">
                 <input type="file" (change)="selectImage($event)">
                 <button type="button" [disabled]="!imageSelected" class="btn btn-success waves-effect waves-light m-r-10" (click)="uploadImage()">
                     Cambiar imagen

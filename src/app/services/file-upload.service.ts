@@ -11,25 +11,33 @@ export class FileUploadService {
     constructor() { }
 
     async updatePicture(imgFile: File, imgType: 'users' | 'doctor' | 'hospitals', id: string) {
+        //Return img string name or false
         try {
             const url = `${base_url}/upload/${imgType}/${id}`;
             //Send file to backend ussing FormData
             const formData = new FormData();
-            formData.append('file',imgFile);
+            formData.append('file', imgFile);
 
             //Fetch help us to create request http
-            const resp = await fetch( url, {
+            const resp = await fetch(url, {
                 method: 'PUT',
                 headers: {
                     'x-token': localStorage.getItem('token') || ''
                 },
                 body: formData
-            })
+            });
 
             //To access response body
-            const data = await resp.json();
-            console.log(data)
-            return 'resp;';
+            let data = await resp.json();
+            // console.log(data);
+            if (data.ok) {//We receive an ok value in response
+                // console.log(data);
+                // console.log(`my img ${data.filename}`);
+                return data.filename;
+            } else {
+                console.log(data.msg);
+                return false;
+            }
 
         } catch (error) {
             console.log(error)

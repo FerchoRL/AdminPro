@@ -8,7 +8,7 @@ import { UserService } from "src/app/services/user.service";
     templateUrl: './sidebar.component.html'
 })
 export class SidebarComponent{
-    public user!: User;
+    public user: User;
 
     menuItems: any[] = [];
     constructor(private sidebarService: SidebarService,

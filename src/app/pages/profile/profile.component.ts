@@ -15,12 +15,13 @@ import Swal from "sweetalert2";
 
 export class ProfileComponent implements OnInit {
     public profileForm!: FormGroup;
-    public userDB!: User;
+    public userDB: User;
     public imageSelected!: File;
+    public imgTemp: any = '';
 
     constructor(private fb: FormBuilder,
         private userService: UserService,
-        private fileUploadService: FileUploadService ) {
+        private fileUploadService: FileUploadService) {
         this.userDB = userService.user;
     }
 
@@ -34,21 +35,46 @@ export class ProfileComponent implements OnInit {
 
     updateProfile() {
         this.userService.updateProfileUser(this.profileForm.value)
-            .subscribe(resp => { //TODO: Implement validations when form values are same than DB values
+        //Tendria que ver por que esta deprecated
+            .subscribe(resp => {
                 const { userName, email } = this.profileForm.value;
                 this.userDB.userName = userName;
                 this.userDB.email = email;
                 Swal.fire("Informacion actualizada", "", "success");
-            })
+            }, (err) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: err.error.msg
+                  });
+            });
     }
 
-    selectImage( event: any ){
+    selectImage(event: any) {
         //event.target.files[0] en esta posicion del event es donde esta la imagen
-        this.imageSelected = event.target.files[0];
+        let file = event.target.files[0];
+        this.imageSelected = file;
+        if (!file) {
+            return this.imgTemp = null;
+        }
+
+        //Mostrar la foto temporal que se selecciona
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+            this.imgTemp = reader.result;
+        }
+        return this.imgTemp;
     }
 
-    uploadImage(){
+    uploadImage() {
+        console.log(this.userDB.img);
         this.fileUploadService.updatePicture(this.imageSelected, 'users', this.userDB.uid || '')
-        .then(img => console.log(img))
+            .then(imgNew => {
+                this.userDB.img = imgNew;
+                //Tuve que implementar el siguiente reload debido a que mi imagen no se actualizaba automaticamente
+                Swal.fire("Profile Picture actualizada", "", "success");//No Me funciona el sweet alert ya que despues de actualiza automaticamente la pagina
+                window.location.reload();
+            });//Update image automatically
     }
 }
