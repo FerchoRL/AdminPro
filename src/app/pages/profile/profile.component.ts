@@ -6,7 +6,7 @@ import { UserService } from "src/app/services/user.service";
 import Swal from "sweetalert2";
 
 @Component({
-    selector: 'app=profile',
+    selector: 'app-profile',
     templateUrl: './profile.component.html',
     styleUrls: [
         './profile.component.css'
