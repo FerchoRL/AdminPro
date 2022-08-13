@@ -142,5 +142,18 @@ export class UserService {
     loadUsers(offset: number = 0, limit: number = 0){
         const url = `${base_url}/users?limit=${limit}&offset=${offset}`;
         return this.http.get<LoadUser>( url, this.headers)
+        .pipe(
+            //Por lo que entiendo, mapeo a los usuarios para poder acceder a sus propiedades
+            map( resp => {
+                const users = resp.allUsers.map(
+                    newUser => new User(newUser.userName,newUser.email,'',newUser.img, newUser.google, newUser.role, newUser.uid)
+                );
+
+                return{
+                    countUsers: resp.countUsers,
+                    allUsers: users
+                }
+            })
+        )
     }
 }

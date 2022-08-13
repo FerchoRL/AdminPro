@@ -30,18 +30,18 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>Avatar</th>
+                                <th class="w100">Avatar</th>
                                 <th>Correo</th>
                                 <th>Nombre</th>
-                                <th>Role</th>
-                                <th>Auth</th>
-                                <th class="text-nowrap">Actions</th>
+                                <th class="w100">Role</th>
+                                <th class="w100">Auth</th>
+                                <th class="text-nowrap w100">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let user of users" class="table-user">
                                 <td>
-                                    <img [src]="user.img">
+                                    <img [src]="user.imageURL" [alt]="user.email" class="avatar-width text-center">
                                 </td>
                                 <td>{{ user.email }}</td>
                                 <td>{{ user.userName }}</td>
