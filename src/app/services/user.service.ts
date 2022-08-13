@@ -8,6 +8,7 @@ import { environment } from "src/environments/environment";
 import { LoginForm } from "../interfaces/login-form.interfaces";
 import { RegisterForm } from "../interfaces/register-form.interfaces";
 import { User } from "../models/user.model";
+import { LoadUser } from "../interfaces/load-users.interface";
 
 const base_url = environment.base_url;
 declare const gapi: any;
@@ -33,6 +34,14 @@ export class UserService {
 
     get uid(): string {
         return this.user.uid || '';
+    }
+
+    get headers(){
+        return {
+            headers: {
+                'x-token': this.token
+            }
+        }
     }
 
     //Hago mi interfaz RegisterForm para poder acceder a sus propiedades y el tipado
@@ -128,5 +137,10 @@ export class UserService {
                 'x-token': this.token
             }
         });
+    }
+
+    loadUsers(offset: number = 0, limit: number = 0){
+        const url = `${base_url}/users?limit=${limit}&offset=${offset}`;
+        return this.http.get<LoadUser>( url, this.headers)
     }
 }
