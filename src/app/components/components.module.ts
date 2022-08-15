@@ -7,17 +7,20 @@ import { NgChartsModule } from 'ng2-charts';
 //Components
 import { IncreaseComponent } from './increase/increase.component';
 import { DoughnutGraphComponent } from './doughnut/doughnut-graph.component';
+import { ModalImgComponent } from './modal-img/modal-img.component';
 
 
 
 @NgModule({
   declarations: [
     IncreaseComponent,
-    DoughnutGraphComponent
+    DoughnutGraphComponent,
+    ModalImgComponent
   ],
   exports:[
     IncreaseComponent,
-    DoughnutGraphComponent
+    DoughnutGraphComponent,
+    ModalImgComponent
   ],
   imports: [
     CommonModule,

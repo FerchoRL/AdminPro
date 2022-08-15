@@ -1,8 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { Validators } from "@angular/forms";
 import { User } from "src/app/models/user.model";
+import { ModalImageService } from "src/app/services/modal-image.service";
 import { SearchsService } from "src/app/services/searchs.service";
 import { UserService } from "src/app/services/user.service";
+import Swal from "sweetalert2";
 
 @Component({
     selector: 'app-users',
@@ -21,7 +23,8 @@ export class UsersComponent implements OnInit {
     public loadingElement: boolean = true;
 
     constructor(private userService: UserService,
-        private searchsService: SearchsService) { }
+        private searchsService: SearchsService,
+        private modalImageService: ModalImageService) { }
 
     ngOnInit(): void {
         this.refreshUsers();
@@ -47,15 +50,56 @@ export class UsersComponent implements OnInit {
         this.refreshUsers();
     }
 
-    search(searchWord: string){
+    search(searchWord: string) {
         if (searchWord.length === 0) {
-            this.users =  this.usersTemp;//Si no hago ni una busqueda mantengo la lista original y no hago la peticion a mi API
+            this.users = this.usersTemp;//Si no hago ni una busqueda mantengo la lista original y no hago la peticion a mi API
             return;
         }
         this.searchsService.searchInCollection('users', searchWord)
-        .subscribe( resp => {
-            console.log(resp);
-            this.users = resp
+            .subscribe(resp => {
+                console.log(resp);
+                this.users = resp
+            });
+    }
+
+    deleteUser(user: User) {
+        //Validation to avoid deleted me by myself
+        if (user.uid === this.userService.uid){
+            Swal.fire('No puedes eliminar tu usuario');
+            return;
+        }
+        Swal.fire({
+            title: 'Borrar Usuario?',
+            text: `Estas a punto de eliminar el usuario ${user.userName}`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, eliminalo!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.userService.removeUser(user)
+                    .subscribe(resp => {
+                        Swal.fire(
+                            'Borrado!',
+                            `El usuario ${user.userName} fue eliminado`,
+                            'success'
+                        );
+                        this.refreshUsers();
+                    });
+            }
         });
+    }
+
+    updateRole(user: User){//Es una opcion de actualizar la info desde las tablas
+        this.userService.saveUser(user)
+        .subscribe(resp => {
+            console.log(resp);
+        })
+    }
+
+    //Function to open the modal. This happened due modal is in all the project
+    openModal(user: User){
+        this.modalImageService.oppenModal();
     }
 }
