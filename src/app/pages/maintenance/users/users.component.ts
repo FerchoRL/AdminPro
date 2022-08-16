@@ -100,6 +100,7 @@ export class UsersComponent implements OnInit {
 
     //Function to open the modal. This happened due modal is in all the project
     openModal(user: User){
-        this.modalImageService.oppenModal();
+        console.log(user);
+        this.modalImageService.oppenModal('users', user.uid || '', user.img || 'notImage');
     }
 }
