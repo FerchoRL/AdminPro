@@ -68,7 +68,6 @@ export class ProfileComponent implements OnInit {
     }
 
     uploadImage() {
-        console.log(this.userDB.img);
         this.fileUploadService.updatePicture(this.imageSelected, 'users', this.userDB.uid || '')
             .then(imgNew => {
                 this.userDB.img = imgNew;

@@ -1,5 +1,7 @@
 import { Component } from "@angular/core";
+import { FileUploadService } from "src/app/services/file-upload.service";
 import { ModalImageService } from "src/app/services/modal-image.service";
+import Swal from "sweetalert2";
 
 @Component({
     selector: 'app-modal-img',
@@ -11,7 +13,8 @@ export class ModalImgComponent {
     public imageSelected!: File;
     public imgTemp: any = null;
 
-    constructor( public modalImageService: ModalImageService) {}
+    constructor( public modalImageService: ModalImageService,
+        public fileUploadService: FileUploadService) {}
 
     closeModal() {
         this.imgTemp = null;
@@ -33,5 +36,18 @@ export class ModalImgComponent {
             this.imgTemp = reader.result;
         }
         return this.imgTemp;
+    }
+
+    uploadImage() {
+        const id = this.modalImageService.id;
+        const collection = this.modalImageService.collection;
+        this.fileUploadService.updatePicture(this.imageSelected, collection, id)
+            .then(imgNew => {
+                //Tuve que implementar el siguiente reload debido a que mi imagen no se actualizaba automaticamente
+                Swal.fire("Profile Picture actualizada", "", "success");//No Me funciona el sweet alert ya que despues de actualiza automaticamente la pagina
+                this.modalImageService.newImg.emit(imgNew)
+                this.closeModal();
+                // window.location.reload();
+            });//Update image automatically
     }
 }

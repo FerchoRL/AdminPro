@@ -10,7 +10,7 @@ const base_url = environment.base_url;
 export class FileUploadService {
     constructor() { }
 
-    async updatePicture(imgFile: File, imgType: 'users' | 'doctor' | 'hospitals', id: string) {
+    async updatePicture(imgFile: File, imgType: 'users' | 'doctors' | 'hospitals', id: string) {
         //Return img string name or false
         try {
             const url = `${base_url}/upload/${imgType}/${id}`;

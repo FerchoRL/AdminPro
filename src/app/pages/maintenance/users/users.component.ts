@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Validators } from "@angular/forms";
+import { delay } from "rxjs";
 import { User } from "src/app/models/user.model";
 import { ModalImageService } from "src/app/services/modal-image.service";
 import { SearchsService } from "src/app/services/searchs.service";
@@ -28,6 +29,10 @@ export class UsersComponent implements OnInit {
 
     ngOnInit(): void {
         this.refreshUsers();
+        this.modalImageService.newImg
+        .pipe(
+            delay(100)//Darle tiempo al servidor de recargar para mostrar la imagen
+        ).subscribe(img => this.refreshUsers())
     }
 
     //Funcion que me ayuda a actualizar la pagina cuando cambie de paginacion
@@ -93,14 +98,11 @@ export class UsersComponent implements OnInit {
 
     updateRole(user: User){//Es una opcion de actualizar la info desde las tablas
         this.userService.saveUser(user)
-        .subscribe(resp => {
-            console.log(resp);
-        })
+        .subscribe();
     }
 
     //Function to open the modal. This happened due modal is in all the project
     openModal(user: User){
-        console.log(user);
         this.modalImageService.oppenModal('users', user.uid || '', user.img || 'notImage');
     }
 }
