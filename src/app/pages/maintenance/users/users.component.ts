@@ -1,6 +1,6 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Validators } from "@angular/forms";
-import { delay } from "rxjs";
+import { delay, Subscription } from "rxjs";
 import { User } from "src/app/models/user.model";
 import { ModalImageService } from "src/app/services/modal-image.service";
 import { SearchsService } from "src/app/services/searchs.service";
@@ -15,24 +15,29 @@ import Swal from "sweetalert2";
     ]
 })
 
-export class UsersComponent implements OnInit {
+export class UsersComponent implements OnInit, OnDestroy {
 
     public totalUsers: number = 0;
     public users: User[] = [];
     public usersTemp: User[] = [];
     public fromPage: number = 0;
     public loadingElement: boolean = true;
+    public imgSubs: Subscription = new Subscription;
 
     constructor(private userService: UserService,
         private searchsService: SearchsService,
         private modalImageService: ModalImageService) { }
 
+    ngOnDestroy(): void {
+        this.imgSubs.unsubscribe();
+    }
+
     ngOnInit(): void {
         this.refreshUsers();
-        this.modalImageService.newImg
+        this.imgSubs = this.modalImageService.newImg
         .pipe(
             delay(100)//Darle tiempo al servidor de recargar para mostrar la imagen
-        ).subscribe(img => this.refreshUsers())
+        ).subscribe(img => this.refreshUsers())//Debo cerrar esta subscripcion
     }
 
     //Funcion que me ayuda a actualizar la pagina cuando cambie de paginacion
