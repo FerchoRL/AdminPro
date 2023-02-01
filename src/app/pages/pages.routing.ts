@@ -6,6 +6,8 @@ import { AuthGuard } from "../guard/auth.guard";
 import { AccountSettingsComponent } from "./accountsettings/account-setting.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { Graph1Component } from "./graph1/graph1.component";
+import { DoctorsComponent } from "./maintenance/doctors/doctors.component";
+import { HospitalsComponent } from "./maintenance/hospitals/hospitals.component";
 import { UsersComponent } from "./maintenance/users/users.component";
 import { PagesComponent } from "./pages.component";
 import { ProfileComponent } from "./profile/profile.component";
@@ -26,7 +28,9 @@ const routes: Routes = [
       { path: 'promises', component: PromisesComponent, data: { titlePage: 'Promises' } },
       { path: 'rxjs', component: RxjsComponent, data: { titlePage: 'Rxjs' } },
       { path: 'profile', component: ProfileComponent, data: {titlePage: 'Profile'}},
-      { path: 'users', component: UsersComponent, data: {titlePage: 'Users'}}
+      { path: 'users', component: UsersComponent, data: {titlePage: 'Users'}},
+      { path: 'doctors', component: DoctorsComponent, data: {titlePage: 'Doctors'}},
+      { path: 'hospitals', component: HospitalsComponent, data: {titlePage: 'Hospitals'}}
 
     ]
   }
