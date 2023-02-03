@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { map } from "rxjs";
 import { environment } from "src/environments/environment";
 import { User } from "../models/user.model";
+import { Hospital } from "../models/hospital.model";
 
 
 const base_url = `${environment.base_url}/everything/collection`;
@@ -37,6 +38,8 @@ export class SearchsService {
                 switch(collection){
                     case 'users':
                         return this.convertToUser(resp.data);
+                    case 'hospitals':
+                        return this.convertToHospital(resp.data)
                     default:
                         return[];
                 }
@@ -48,5 +51,12 @@ export class SearchsService {
         return results.map(
             user => new User(user.userName,user.email,'',user.img, user.google, user.role, user.uid)
         )
+    }
+
+    private convertToHospital( results: any[]): Hospital[]{
+        return results;
+        // return results.map(
+        //     hospital => new Hospital(hospital._id, hospital.name, hospital.user, hospital.img)
+        // )
     }
 }

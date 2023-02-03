@@ -4,6 +4,7 @@ import { Subscription, delay } from 'rxjs';
 import { Hospital } from 'src/app/models/hospital.model';
 import { HospitalService } from 'src/app/services/hospital.service';
 import { ModalImageService } from 'src/app/services/modal-image.service';
+import { SearchsService } from 'src/app/services/searchs.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -14,23 +15,25 @@ import Swal from 'sweetalert2';
 export class HospitalsComponent implements OnInit, OnDestroy {
 
   public hospitals: Hospital[] = [];
+  public hospitalsTemp: Hospital[] = [];
   public loading: boolean = true;
   public fromPage: number = 0;
   public imgHospitals: Subscription = new Subscription;
 
   constructor(private hospitalService: HospitalService,
-    private modalImageService: ModalImageService ) { }
+    private modalImageService: ModalImageService,
+    private searchsService: SearchsService) { }
 
   ngOnInit(): void {
     this.loadHospitals();
     this.imgHospitals = this.modalImageService.newImg
-        .pipe(
-            delay(100)//Darle tiempo al servidor de recargar para mostrar la imagen
-        ).subscribe(img => this.loadHospitals())//Debo cerrar esta subscripcion
+      .pipe(
+        delay(100)//Darle tiempo al servidor de recargar para mostrar la imagen
+      ).subscribe(img => this.loadHospitals())//Debo cerrar esta subscripcion
   }
 
   ngOnDestroy(): void {
-      this.imgHospitals.unsubscribe();
+    this.imgHospitals.unsubscribe();
   }
 
   loadHospitals() {
@@ -40,7 +43,20 @@ export class HospitalsComponent implements OnInit, OnDestroy {
       .subscribe(hospitals => {
         this.loading = false;
         this.hospitals = hospitals;
+        this.hospitalsTemp = hospitals;//Uso estos hospitals cuando no realizo la busqueda
       });
+  }
+
+  search(searchWord: string) {
+    if (searchWord.length === 0) {
+      this.hospitals = this.hospitalsTemp;//Si no hago ni una busqueda mantengo la lista original y no hago la peticion a mi API
+      return;
+    }
+    this.searchsService.searchInCollection('hospitals', searchWord)
+            .subscribe((resp) => {
+                console.log(resp);
+                this.hospitals = resp as Hospital[];//Necesito castear si no me marca error
+            });
   }
 
   saveChanges(hospital: Hospital) {
@@ -68,7 +84,7 @@ export class HospitalsComponent implements OnInit, OnDestroy {
   }
 
   async sweetAlertCreateHospital() {
-    const { value: hospitalName } = await Swal.fire<string>({
+    const { value: hospitalName = '' } = await Swal.fire<string>({
       text: 'Ingrese nombre del nuevo hospital',
       input: 'text',
       inputPlaceholder: 'Crear Hospital',
@@ -82,7 +98,9 @@ export class HospitalsComponent implements OnInit, OnDestroy {
         }
       }
     });
-    if (hospitalName != undefined && hospitalName.length > 0) {
+    if (hospitalName.length > 0) {
+      // if (hospitalName != undefined && hospitalName.length > 0) {
+
       this.createHospital(hospitalName);
     }
   }
