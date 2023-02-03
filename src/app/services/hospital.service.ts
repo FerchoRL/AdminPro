@@ -32,4 +32,20 @@ export class HospitalService {
             map((resp: any) => resp.hospitals)
         )
     }
+
+    createHospital( name: string ){
+        const url = `${base_url}/hospitals`;
+        return this.http.post( url, { name }, this.headers);
+    }
+
+    updateHospital( _idHospital: string = "", name: string ){
+        // console.log(`ID: ${_idHospital} - Name${hospitalName}`);
+        const url = `${base_url}/hospitals/${_idHospital}`;
+        return this.http.put( url, { name }, this.headers);
+    }
+
+    deleteHospital( _idHospital: string = "" ){
+        const url = `${base_url}/hospitals/${_idHospital}`;
+        return this.http.delete( url, this.headers);
+    }
 }
