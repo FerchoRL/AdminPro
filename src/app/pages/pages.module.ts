@@ -20,6 +20,7 @@ import { UsersComponent } from "./maintenance/users/users.component";
 import { DoctorsComponent } from "./maintenance/doctors/doctors.component";
 import { HospitalsComponent } from './maintenance/hospitals/hospitals.component';
 import { PipesModule } from "../pipes/pipes.module";
+import { UpdateDoctorComponent } from "./maintenance/doctors/updateDoctor.component";
 
 
 
@@ -35,6 +36,7 @@ import { PipesModule } from "../pipes/pipes.module";
         ProfileComponent,
         UsersComponent,
         DoctorsComponent,
+        UpdateDoctorComponent,
         HospitalsComponent
     ],
     exports: [

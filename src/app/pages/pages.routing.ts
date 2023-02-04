@@ -14,6 +14,7 @@ import { ProfileComponent } from "./profile/profile.component";
 import { ProgressComponent } from "./progress/progress.component";
 import { PromisesComponent } from "./promises/promises.component";
 import { RxjsComponent } from "./rxjs/rxjs.component";
+import { UpdateDoctorComponent } from "./maintenance/doctors/updateDoctor.component";
 
 const routes: Routes = [
   {
@@ -30,6 +31,7 @@ const routes: Routes = [
       { path: 'profile', component: ProfileComponent, data: {titlePage: 'Profile'}},
       { path: 'users', component: UsersComponent, data: {titlePage: 'Users'}},
       { path: 'doctors', component: DoctorsComponent, data: {titlePage: 'Doctors'}},
+      { path: 'doctors/:id', component: UpdateDoctorComponent, data: {titlePage: 'UpdateDoctors'}},
       { path: 'hospitals', component: HospitalsComponent, data: {titlePage: 'Hospitals'}}
 
     ]
