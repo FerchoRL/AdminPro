@@ -4,6 +4,7 @@ import { map } from "rxjs";
 import { environment } from "src/environments/environment";
 import { User } from "../models/user.model";
 import { Hospital } from "../models/hospital.model";
+import { Doctor } from "../models/doctor.model";
 
 
 const base_url = `${environment.base_url}/everything/collection`;
@@ -39,7 +40,9 @@ export class SearchsService {
                     case 'users':
                         return this.convertToUser(resp.data);
                     case 'hospitals':
-                        return this.convertToHospital(resp.data)
+                        return this.convertToHospital(resp.data);
+                    case 'doctors':
+                        return this.convertToDoctor(resp.data);
                     default:
                         return[];
                 }
@@ -58,5 +61,9 @@ export class SearchsService {
         // return results.map(
         //     hospital => new Hospital(hospital._id, hospital.name, hospital.user, hospital.img)
         // )
+    }
+
+    private convertToDoctor( results: any[]): Doctor[]{
+        return results;
     }
 }
