@@ -29,10 +29,10 @@
         <div class="card">
             <div class="card-body">
                 <div class="text-right">
-                    <button class="btn btn-primary"
-                    (click)="sweetAlertCreateDoctor()">
+                    <a class="btn btn-primary"
+                    routerLink="/dashboard/doctor/newdoctor">
                         <i class="fa fa-hospital-o">Create Doctor</i>
-                    </button>
+                    </a>
                 </div>
                 <h4 class="card-title">Doctors {{ doctors.length }}</h4>
                 <h6 class="card-subtitle">Registered Doctors</h6>
@@ -56,10 +56,10 @@
                                     {{ doctor.name }}
                                 </td>
                                 <td class="text-nowrap">
-                                    <a (click)="saveChanges(doctor)" data-toggle="tooltip" data-original-title="Edit"> <i
+                                    <a [routerLink]="['/dashboard/updateDoctor', doctor._id]" (click)="saveChanges(doctor)" data-toggle="tooltip" data-original-title="Edit"> <i
                                             class="fa fa-pencil text-inverse m-r-10"></i> </a>
-                                    <a href="#" data-toggle="tooltip" data-original-title="Delete"> <i
-                                            class="fa fa-close text-danger"></i> </a>
+                                    <a (click)="deleteDoctor(doctor)" data-toggle="tooltip" data-original-title="Delete"> <i
+                                            class="fa fa-close text-danger cursor"></i> </a>
                                 </td>
                             </tr>
                         </tbody>

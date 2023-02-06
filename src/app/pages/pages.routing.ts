@@ -31,7 +31,7 @@ const routes: Routes = [
       { path: 'profile', component: ProfileComponent, data: {titlePage: 'Profile'}},
       { path: 'users', component: UsersComponent, data: {titlePage: 'Users'}},
       { path: 'doctors', component: DoctorsComponent, data: {titlePage: 'Doctors'}},
-      { path: 'doctors/:id', component: UpdateDoctorComponent, data: {titlePage: 'UpdateDoctors'}},
+      { path: 'updateDoctor/:id', component: UpdateDoctorComponent, data: {titlePage: 'UpdateDoctors'}},
       { path: 'hospitals', component: HospitalsComponent, data: {titlePage: 'Hospitals'}}
 
     ]
