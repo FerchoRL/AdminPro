@@ -1,0 +1,9 @@
+.upload-img{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.upload-img *{
+    margin-bottom: 1rem;
+}

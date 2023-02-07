@@ -1,0 +1,15 @@
+<div class="card">
+    <div class="card-body">
+        <h3>{{title}}</h3>
+        <!-- From https://valor-software.com/ng2-charts/#DoughnutChart -->
+        <div style="display: block">
+            <!-- <canvas baseChart [data]="doughnutChartData" [type]="doughnutChartType">
+            </canvas> -->
+            <canvas baseChart
+            [datasets]="chartData"
+            [type]="'doughnut'"
+            [labels]="doughnutChartLabels">
+            </canvas>
+        </div>
+    </div>
+</div>
