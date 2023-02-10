@@ -55,7 +55,6 @@
     <div class="col-lg-6">
         <div class="card">
             <div class="card-body animated fadeIn fast" *ngIf="selectedHospital != undefined">
-                entra aqui
                 <h4 class="card-title">Hospital</h4>
                 <h6 class="card-subtitle">{{ selectedHospital.name }}</h6>
                 <img [src]="selectedHospital.img | img: 'hospitals'" [alt]="selectedHospital.name"

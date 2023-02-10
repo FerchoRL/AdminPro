@@ -67,7 +67,7 @@ export class UsersComponent implements OnInit, OnDestroy {
         }
         this.searchsService.searchInCollection('users', searchWord)
             .subscribe(resp => {
-                console.log(resp);
+                // console.log(resp);
                 this.users = resp as User[];//Necesito castear si no me marca error
             });
     }

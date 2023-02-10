@@ -54,7 +54,7 @@ export class HospitalsComponent implements OnInit, OnDestroy {
     }
     this.searchsService.searchInCollection('hospitals', searchWord)
             .subscribe((resp) => {
-                console.log(resp);
+                // console.log(resp);
                 this.hospitals = resp as Hospital[];//Necesito castear si no me marca error
             });
   }
