@@ -21,6 +21,7 @@ import { DoctorsComponent } from "./maintenance/doctors/doctors.component";
 import { HospitalsComponent } from './maintenance/hospitals/hospitals.component';
 import { PipesModule } from "../pipes/pipes.module";
 import { UpdateDoctorComponent } from "./maintenance/doctors/updateDoctor.component";
+import { SearchComponent } from "./searches/search.component";
 
 
 
@@ -37,7 +38,8 @@ import { UpdateDoctorComponent } from "./maintenance/doctors/updateDoctor.compon
         UsersComponent,
         DoctorsComponent,
         UpdateDoctorComponent,
-        HospitalsComponent
+        HospitalsComponent,
+        SearchComponent
     ],
     exports: [
         DashboardComponent,
@@ -48,7 +50,9 @@ import { UpdateDoctorComponent } from "./maintenance/doctors/updateDoctor.compon
         PromisesComponent,
         RxjsComponent,
         ProfileComponent,
-        UsersComponent
+        UsersComponent,
+        SearchComponent
+
     ],
     imports: [
         CommonModule,

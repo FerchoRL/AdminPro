@@ -15,6 +15,7 @@ import { ProgressComponent } from "./progress/progress.component";
 import { PromisesComponent } from "./promises/promises.component";
 import { RxjsComponent } from "./rxjs/rxjs.component";
 import { UpdateDoctorComponent } from "./maintenance/doctors/updateDoctor.component";
+import { SearchComponent } from "./searches/search.component";
 
 const routes: Routes = [
   {
@@ -26,9 +27,12 @@ const routes: Routes = [
       { path: 'progress', component: ProgressComponent, data: { titlePage: 'Progress' } },
       { path: 'graph1', component: Graph1Component, data: { titlePage: 'Graph1' } },
       { path: 'account-settings', component: AccountSettingsComponent, data: { titlePage: 'Account-Settings' } },
+      { path: 'search/:searchValue', component: SearchComponent, data: { titlePage: 'Busquedas' } },
       { path: 'promises', component: PromisesComponent, data: { titlePage: 'Promises' } },
       { path: 'rxjs', component: RxjsComponent, data: { titlePage: 'Rxjs' } },
       { path: 'profile', component: ProfileComponent, data: {titlePage: 'Profile'}},
+
+      //Maintenance
       { path: 'users', component: UsersComponent, data: {titlePage: 'Users'}},
       { path: 'doctors', component: DoctorsComponent, data: {titlePage: 'Doctors'}},
       { path: 'updateDoctor/:id', component: UpdateDoctorComponent, data: {titlePage: 'UpdateDoctors'}},

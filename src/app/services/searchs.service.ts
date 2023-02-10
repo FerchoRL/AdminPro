@@ -7,7 +7,7 @@ import { Hospital } from "../models/hospital.model";
 import { Doctor } from "../models/doctor.model";
 
 
-const base_url = `${environment.base_url}/everything/collection`;
+const base_url = `${environment.base_url}`;
 
 @Injectable({
     providedIn: 'root'
@@ -30,7 +30,7 @@ export class SearchsService {
     }
 
     searchInCollection(collection: 'users' | 'doctors' | 'hospitals', searchWord: string = ''){
-        const url = `${base_url}/${collection}/${searchWord}`;
+        const url = `${base_url}/everything/collection/${collection}/${searchWord}`;
         return this.http.get( url, this.headers)
         //Response return ok msg and data
         .pipe(
@@ -48,6 +48,11 @@ export class SearchsService {
                 }
             })
         );
+    }
+
+    searchEverything(searchWord: string = ''){
+        const url = `${base_url}/everything/${searchWord}`;
+        return this.http.get( url, this.headers)
     }
 
     private convertToUser( results: any[]): User[]{
