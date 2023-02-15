@@ -16,6 +16,7 @@ import { PromisesComponent } from "./promises/promises.component";
 import { RxjsComponent } from "./rxjs/rxjs.component";
 import { UpdateDoctorComponent } from "./maintenance/doctors/updateDoctor.component";
 import { SearchComponent } from "./searches/search.component";
+import { AdminGuard } from "../guard/admin.guard";
 
 const routes: Routes = [
   {
@@ -33,7 +34,11 @@ const routes: Routes = [
       { path: 'profile', component: ProfileComponent, data: {titlePage: 'Profile'}},
 
       //Maintenance
-      { path: 'users', component: UsersComponent, data: {titlePage: 'Users'}},
+
+      //Admin routes
+      { path: 'users', canActivate: [AdminGuard], component: UsersComponent, data: {titlePage: 'Users'}},
+
+      //User routes
       { path: 'doctors', component: DoctorsComponent, data: {titlePage: 'Doctors'}},
       { path: 'updateDoctor/:id', component: UpdateDoctorComponent, data: {titlePage: 'UpdateDoctors'}},
       { path: 'hospitals', component: HospitalsComponent, data: {titlePage: 'Hospitals'}}

@@ -36,12 +36,22 @@ export class UserService {
         return this.user.uid || '';
     }
 
-    get headers(){
+    get headers() {
         return {
             headers: {
                 'x-token': this.token
             }
         }
+    }
+
+    get role(): 'ADMIN_ROLE' | 'USER_ROLE' | undefined{
+        return this.user.role;
+    }
+
+    saveInLocalStorage(token: string, menu: any) {
+        localStorage.setItem('token', token);
+        localStorage.setItem('menu', JSON.stringify(menu));
+
     }
 
     //Hago mi interfaz RegisterForm para poder acceder a sus propiedades y el tipado
@@ -52,7 +62,7 @@ export class UserService {
         return this.http.post(`${base_url}/users`, formData)
             .pipe(
                 tap((resp: any) => {
-                    localStorage.setItem('token', resp.token);
+                    this.saveInLocalStorage(resp.token, resp.menu);
                 })
             );
     }
@@ -63,7 +73,7 @@ export class UserService {
         return this.http.post(`${base_url}/login`, formData)
             .pipe(
                 tap((resp: any) => {
-                    localStorage.setItem('token', resp.token);
+                    this.saveInLocalStorage(resp.token, resp.menu);
                 })
             );
     }
@@ -75,7 +85,7 @@ export class UserService {
         return this.http.post(`${base_url}/login/google`, { token })
             .pipe(
                 tap((resp: any) => {
-                    localStorage.setItem('token', resp.token);
+                    this.saveInLocalStorage(resp.token, resp.menu);
                 })
             );
     }
@@ -91,7 +101,7 @@ export class UserService {
                 const { userName, email, role, google, img = '', uid } = resp.userDB
                 //Create a instance of my user model
                 this.user = new User(userName, email, '', img, google, role, uid);
-                localStorage.setItem('token', resp.newToken);//Debe ser igual a la respuesta que trae mi api
+                this.saveInLocalStorage(resp.newToken, resp.menu);
                 return true;
             }),
             catchError(error => {
@@ -103,7 +113,9 @@ export class UserService {
 
     //Logout (didn't use api)
     logout() {
+        //TODO: Delete menu
         localStorage.removeItem('token');//Remove token
+        localStorage.removeItem('menu');//Remove token
         //Logout from google
         //El signout es libreria externa de angular y me regresa un warning de ngZone el cual lo resuelvo asi:
         this.auth2.signOut().then(() => {
@@ -127,7 +139,7 @@ export class UserService {
         });
     }
 
-    updateProfileUser(data: { email: string, userName: string, role: string}) {
+    updateProfileUser(data: { email: string, userName: string, role: string }) {
         data = {
             ...data,
             role: this.user.role || ""
@@ -135,26 +147,26 @@ export class UserService {
         return this.http.put(`${base_url}/users/${this.uid}`, data, this.headers);
     }
 
-    loadUsers(offset: number = 0, limit: number = 0){
+    loadUsers(offset: number = 0, limit: number = 0) {
         const url = `${base_url}/users?limit=${limit}&offset=${offset}`;
-        return this.http.get<LoadUser>( url, this.headers)
-        //Response return ok msg, countUsers and allUsers
-        .pipe(
-            //Por lo que entiendo, mapeo a los usuarios para poder acceder a sus propiedades
-            map( resp => {
-                const users = resp.allUsers.map(
-                    newUser => new User(newUser.userName,newUser.email,'',newUser.img, newUser.google, newUser.role, newUser.uid)
-                );
+        return this.http.get<LoadUser>(url, this.headers)
+            //Response return ok msg, countUsers and allUsers
+            .pipe(
+                //Por lo que entiendo, mapeo a los usuarios para poder acceder a sus propiedades
+                map(resp => {
+                    const users = resp.allUsers.map(
+                        newUser => new User(newUser.userName, newUser.email, '', newUser.img, newUser.google, newUser.role, newUser.uid)
+                    );
 
-                return{
-                    countUsers: resp.countUsers,
-                    allUsers: users
-                }
-            })
-        );
+                    return {
+                        countUsers: resp.countUsers,
+                        allUsers: users
+                    }
+                })
+            );
     }
 
-    removeUser(user: User){
+    removeUser(user: User) {
         const url = `${base_url}/users/${user.uid}`;
         return this.http.delete(url, this.headers);
     }

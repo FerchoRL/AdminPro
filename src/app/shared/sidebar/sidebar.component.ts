@@ -10,10 +10,10 @@ import { UserService } from "src/app/services/user.service";
 export class SidebarComponent{
     public user: User;
 
-    menuItems: any[] = [];
-    constructor(private sidebarService: SidebarService,
+    // menuItems: any[] = [];
+    constructor(public sidebarService: SidebarService,
         private userService: UserService){
-        this.menuItems = sidebarService.menu;
+        // this.menuItems = sidebarService.menu;
         this.user = userService.user;
     }
 
